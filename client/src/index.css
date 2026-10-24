@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 225 20% 7%;
+    --foreground: 220 15% 92%;
+
+    --card: 225 18% 11%;
+    --card-foreground: 220 15% 92%;
+
+    --popover: 225 18% 13%;
+    --popover-foreground: 220 15% 92%;
+
+    --primary: 170 65% 45%;
+    --primary-foreground: 225 20% 7%;
+
+    --secondary: 225 15% 16%;
+    --secondary-foreground: 220 15% 85%;
+
+    --muted: 225 12% 18%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 265 55% 62%;
+    --accent-foreground: 220 15% 95%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 220 15% 95%;
+
+    --border: 225 15% 18%;
+    --input: 225 15% 15%;
+    --ring: 170 65% 45%;
+
+    --radius: 1rem;
+
+    /* Custom tokens */
+    --ai-glow: 265 55% 62%;
+    --ai-glow-subtle: 265 40% 25%;
+    --savage: 15 85% 55%;
+    --savage-foreground: 15 90% 95%;
+    --mentor: 200 70% 50%;
+    --comfort: 150 50% 50%;
+    --midnight-bg: 225 25% 4%;
+    --online: 145 65% 50%;
+    --bubble-user: 225 15% 18%;
+    --bubble-ai: 265 25% 15%;
+
+    --sidebar-background: 225 20% 9%;
+    --sidebar-foreground: 220 15% 85%;
+    --sidebar-primary: 170 65% 45%;
+    --sidebar-primary-foreground: 225 20% 7%;
+    --sidebar-accent: 225 15% 14%;
+    --sidebar-accent-foreground: 220 15% 90%;
+    --sidebar-border: 225 15% 15%;
+    --sidebar-ring: 170 65% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .ai-glow {
+    box-shadow:
+      0 0 20px hsl(var(--ai-glow) / 0.15),
+      0 0 60px hsl(var(--ai-glow) / 0.05);
+  }
+
+  .ai-glow-text {
+    text-shadow: 0 0 10px hsl(var(--ai-glow) / 0.4);
+  }
+
+  .savage-glow {
+    box-shadow:
+      0 0 20px hsl(var(--savage) / 0.2),
+      0 0 60px hsl(var(--savage) / 0.08);
+  }
+
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl;
+  }
+
+  .glass-border {
+    @apply border border-border/50;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted));
+    border-radius: 20px;
+  }
+}
+
+@layer components {
+  .message-bubble-user {
+    @apply bg-bubble-user rounded-2xl rounded-br-md px-4 py-2.5;
+  }
+
+  .message-bubble-ai {
+    @apply bg-bubble-ai rounded-2xl rounded-bl-md px-4 py-2.5 ai-glow;
+  }
+
+  .message-bubble-ai.savage {
+    @apply savage-glow;
+    background: hsl(var(--savage) / 0.12);
+  }
+}
