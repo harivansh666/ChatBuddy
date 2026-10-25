@@ -1,3 +1,4 @@
+from server.modules.users.schemas import GetSlideUsers
 from sqlalchemy.ext.asyncio import AsyncSession
 from server.modules.users.exceptions import UserAlreadyExistsException, UserNotFoundException
 from server.modules.users.models import User
@@ -30,6 +31,13 @@ class UserService:
         """Public fetch returning Pydantic UserRead schema."""
         user = await self.get_by_id(user_id)
         return UserRead.model_validate(user)
+
+    async def get_users_for_slidebar(self) -> list[GetSlideUsers]:
+        """Get users for slidebar"""
+        users = await self.repository.get_users_for_slidebar()
+        if not users:
+            raise UserNotFoundException(message="No user found.")
+        return [GetSlideUsers.model_validate(user) for user in users]
 
     async def get_by_email(self, email: str) -> User | None:
         """Internal helper for auth service to look up credentials."""

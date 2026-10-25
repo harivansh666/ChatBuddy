@@ -20,6 +20,13 @@ class UserUpdate(BaseModel):
     avatar: str | None = None
     is_active: bool | None = None
 
+class GetSlideUsers(BaseModel):
+    """Lightweight user schema for populating the friends/slide sidebar."""
+    id: int
+    nickname: str
+    avatar: str | None = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 class UserRead(UserBase):
     """

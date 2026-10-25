@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from server.modules.users.models import User
 
 
+
 class UserRepository:
     """
     Data access layer for User entity.
@@ -34,3 +35,10 @@ class UserRepository:
         self.session.add(user)
         await self.session.flush()
         return user
+    async def get_users_for_slidebar(self)->list[GetSlideUsers]:
+        query= select(User.nickname, User.id, User.avatar).where(User.is_active==True)
+        result = await self.session.execute(query)
+        return result.scalars().all()
+
+
+
