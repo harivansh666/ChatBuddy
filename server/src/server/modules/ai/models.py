@@ -1,6 +1,8 @@
 from datetime import datetime
+
 from sqlalchemy import DateTime, ForeignKey, Index, Integer, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
+
 from server.db.base import Base
 
 
@@ -16,6 +18,7 @@ class AIChatHistory(Base):
     - mood_at_time: integer nullable
     - created_at: timestamp default now
     """
+
     __tablename__ = "ai_chat_history"
 
     id: Mapped[int] = mapped_column(

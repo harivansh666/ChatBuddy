@@ -1,6 +1,8 @@
 from datetime import datetime
+
 from sqlalchemy import Boolean, DateTime, ForeignKey, Index, Integer, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
+
 from server.db.base import Base, TimestampMixin
 
 
@@ -15,6 +17,7 @@ class User(Base, TimestampMixin):
     - avatar: text nullable
     - created_at: timestamp default now
     """
+
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(
@@ -46,9 +49,7 @@ class User(Base, TimestampMixin):
         nullable=False,
     )
 
-    __table_args__ = (
-        Index("users_email_idx", "email", unique=True),
-    )
+    __table_args__ = (Index("users_email_idx", "email", unique=True),)
 
     @property
     def password_hash(self) -> str:
@@ -72,6 +73,7 @@ class MoodLog(Base):
     - note: text nullable
     - created_at: timestamp default now
     """
+
     __tablename__ = "mood_logs"
 
     id: Mapped[int] = mapped_column(
@@ -102,6 +104,4 @@ class MoodLog(Base):
         nullable=False,
     )
 
-    __table_args__ = (
-        Index("mood_logs_user_id_idx", "user_id"),
-    )
+    __table_args__ = (Index("mood_logs_user_id_idx", "user_id"),)

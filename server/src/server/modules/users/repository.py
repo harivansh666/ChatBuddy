@@ -1,7 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from server.modules.users.models import User
 
+from server.modules.users.models import User
+from server.modules.users.schemas import GetSlideUsers
 
 
 class UserRepository:
@@ -35,10 +36,9 @@ class UserRepository:
         self.session.add(user)
         await self.session.flush()
         return user
-    async def get_users_for_slidebar(self)->list[GetSlideUsers]:
-        query= select(User.nickname, User.id, User.avatar).where(User.is_active==True)
-        result = await self.session.execute(query)
-        return result.scalars().all()
 
-
-
+    async def get_users_for_slidebar(self) -> list[GetSlideUsers]:
+        stmt = select(User.nickname, User.id, User.avatar)
+        result = await self.session.execute(stmt)
+        rows = result.fetchall()
+        return [GetSlideUsers(nickname=row[0], id=row[1], avatar=row[2]) for row in rows]

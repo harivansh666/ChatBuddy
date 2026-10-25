@@ -1,9 +1,9 @@
-from server.modules.users.schemas import GetSlideUsers
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from server.modules.users.exceptions import UserAlreadyExistsException, UserNotFoundException
 from server.modules.users.models import User
 from server.modules.users.repository import UserRepository
-from server.modules.users.schemas import UserRead
+from server.modules.users.schemas import GetSlideUsers, UserRead
 
 
 class UserService:
@@ -56,7 +56,9 @@ class UserService:
         """
         existing_email = await self.repository.get_by_email(email)
         if existing_email:
-            raise UserAlreadyExistsException(message="A user with this email address already exists.")
+            raise UserAlreadyExistsException(
+                message="A user with this email address already exists."
+            )
 
         user = User(
             email=email.lower().strip(),

@@ -1,6 +1,8 @@
 from datetime import datetime
+
 from sqlalchemy import DateTime, Integer, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
+
 from server.db.base import Base, TimestampMixin
 
 
@@ -14,6 +16,7 @@ class Room(Base, TimestampMixin):
     - description: text nullable
     - created_at: timestamp default now
     """
+
     __tablename__ = "rooms"
 
     id: Mapped[int] = mapped_column(

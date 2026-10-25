@@ -1,6 +1,8 @@
 from datetime import datetime
+
 from sqlalchemy import Boolean, DateTime, ForeignKey, Index, Integer, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
+
 from server.db.base import Base
 
 
@@ -18,6 +20,7 @@ class Message(Base):
     - personality: text nullable ('comfort', 'mentor', 'savage')
     - created_at: timestamp default now
     """
+
     __tablename__ = "messages"
 
     id: Mapped[int] = mapped_column(
