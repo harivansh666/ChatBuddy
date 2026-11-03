@@ -10,6 +10,35 @@ async def test_health_check(client: AsyncClient) -> None:
 
 
 @pytest.mark.asyncio
+async def test_signup_cors_preflight(client: AsyncClient) -> None:
+    response = await client.options(
+        "/api/auth/signup",
+        headers={
+            "Origin": "http://localhost:8080",
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "content-type",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://localhost:8080"
+    assert response.headers["access-control-allow-credentials"] == "true"
+
+    signup_response = await client.post(
+        "/api/auth/signup",
+        headers={"Origin": "http://localhost:8080"},
+        json={
+            "email": "cors-user@example.com",
+            "nickname": "cors-user",
+            "password": "Password123!",
+        },
+    )
+
+    assert signup_response.status_code == 201
+    assert signup_response.headers["access-control-allow-origin"] == "http://localhost:8080"
+
+
+@pytest.mark.asyncio
 async def test_register_user_success(client: AsyncClient) -> None:
     payload = {
         "email": "developer@example.com",

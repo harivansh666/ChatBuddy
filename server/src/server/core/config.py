@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "ChatBuddy API"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
-    API_V1_PREFIX: str = "/api/v1"
+    API_V1_PREFIX: str = "/api"
 
     # Database: Default to sqlite+aiosqlite for local development if PostgreSQL is not active
     DATABASE_URL: str = "sqlite+aiosqlite:///./app.db"
@@ -29,8 +29,8 @@ class Settings(BaseSettings):
 
     # CORS
     CORS_ORIGINS: list[str] | str = [
-        "http://localhost:3000",
-        "http://localhost:5173",
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
     ]
 
     @field_validator("CORS_ORIGINS", mode="after")
