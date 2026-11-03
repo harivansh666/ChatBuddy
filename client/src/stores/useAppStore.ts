@@ -40,8 +40,14 @@ export interface AppState {
   nickname: string;
   avatar: string;
   userId: string;
+  accessToken: string;
   isAuthenticated: boolean;
-  setAuth: (userId: string, nickname: string, avatar: string) => void;
+  setAuth: (
+    userId: string,
+    nickname: string,
+    avatar: string,
+    accessToken: string,
+  ) => void;
   logout: () => void;
 
   onlineUsers: string[];
@@ -126,15 +132,18 @@ export const useAppStore = create<AppState>((set, get) => ({
   avatar: "",
   isAuthenticated: false,
   userId: "",
+  accessToken: "",
 
-  setAuth: (userId, nickname, avatar) =>
-    set({ userId, nickname, avatar, isAuthenticated: true }),
+  setAuth: (userId, nickname, avatar, accessToken) =>
+    set({ userId, nickname, avatar, accessToken, isAuthenticated: true }),
 
   logout: () => {
     get().disconnectSocket();
     set({
       nickname: "",
       avatar: "",
+      userId: "",
+      accessToken: "",
       isAuthenticated: false,
     });
   },

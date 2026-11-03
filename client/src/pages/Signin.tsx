@@ -24,15 +24,13 @@ const Signin = () => {
       email,
       password,
     });
-    console.log("response", response.data);
     if (response.status === 200) {
       setAuth(
         response.data.user.id,
         response.data.user.nickname,
         response.data.user.avatar,
+        response.data.token.access_token,
       );
-
-      console.log(response.data.user.nickname, response.data.user.avatar);
 
       toast({
         title: "Success!",
