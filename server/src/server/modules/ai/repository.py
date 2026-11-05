@@ -23,3 +23,22 @@ class AiRepository:
         )
         result = await self.session.execute(statement)
         return list(result.scalars().all())
+
+    async def save_chat(
+        self,
+        user_id: int,
+        user_prompt: str,
+        bot_response: str,
+        personality: str,
+    ) -> AIChatHistory:
+        """Persist a user prompt + AI response pair to the database."""
+        entry = AIChatHistory(
+            user_id=user_id,
+            user_prompt=user_prompt,
+            bot_response=bot_response,
+            personality=personality,
+        )
+        self.session.add(entry)
+        await self.session.commit()
+        await self.session.refresh(entry)
+        return entry

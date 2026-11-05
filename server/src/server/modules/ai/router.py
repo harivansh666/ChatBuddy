@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Query
 
 from server.modules.ai.dependencies import AiServiceDep
-from server.modules.ai.schemas import AIHistoryResponse
+from server.modules.ai.schemas import AIChatRequest, AIChatResponse, AIHistoryResponse
 from server.modules.auth.dependencies import CurrentUserDep
 
 router = APIRouter(tags=["AI"])
@@ -20,4 +20,11 @@ async def get_ai_history(
     return await service.get_ai_history(current_user.id, limit, offset)
 
 
-# Annotated = Type + Instructions
+@router.post("/ai-chat", response_model=AIChatResponse)
+async def ai_chat(
+    service: AiServiceDep,
+    current_user: CurrentUserDep,
+    payload: AIChatRequest,
+) -> AIChatResponse:
+    """Send a message and get an AI reply back. Saves the exchange to history."""
+    return await service.ai_chat(current_user.id, payload)

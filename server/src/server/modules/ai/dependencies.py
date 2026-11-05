@@ -14,6 +14,7 @@ def get_ai_repository(
     """Provides an instance of AiRepository."""
     return AiRepository(session)
 
+
 # iss function ka kaam hai AiRepository ka object banana
 # Depends = FastAPI, mere liye ye dependency arrange kar do.
 def get_ai_service(
@@ -21,6 +22,7 @@ def get_ai_service(
 ) -> AiService:
     """Provides an instance of AiService with its repository injected."""
     return AiService(repository)
+
 
 # Depends = FastAPI, mere liye ye dependency arrange kar do.
 

@@ -1,5 +1,11 @@
+from server.modules.ai.prompts.genResult import generate_result
 from server.modules.ai.repository import AiRepository
-from server.modules.ai.schemas import AIHistoryMessage, AIHistoryResponse
+from server.modules.ai.schemas import (
+    AIChatRequest,
+    AIChatResponse,
+    AIHistoryMessage,
+    AIHistoryResponse,
+)
 
 
 class AiService:
@@ -35,3 +41,24 @@ class AiService:
             )
         ]
         return AIHistoryResponse(messages=messages)
+
+    async def ai_chat(
+        self,
+        user_id: int,
+        payload: AIChatRequest,
+    ) -> AIChatResponse:
+        """Generate an AI reply, persist the exchange, and return the response."""
+        ai_reply = await generate_result(
+            question=payload.prompt,
+            personality=payload.personality,
+            room=payload.rooms,
+        )
+
+        await self.repository.save_chat(
+            user_id=user_id,
+            user_prompt=payload.prompt,
+            bot_response=ai_reply,
+            personality=payload.personality.value,
+        )
+
+        return AIChatResponse(ai_response=ai_reply)
