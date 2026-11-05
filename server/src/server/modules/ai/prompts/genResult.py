@@ -1,3 +1,4 @@
+from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.output_parsers import StrOutputParser
 
 from server.modules.ai.client import get_llm
@@ -9,9 +10,9 @@ async def generate_result(
     question: str,
     personality: Personality,
     room: Rooms | None = None,
-    history: list[object] | None = None,
+    history: list[HumanMessage | AIMessage] | None = None,
 ) -> str:
-    """Call the LLM and return the AI reply as a plain string."""
+    """Call the LLM with memory context and return the AI reply as a plain string."""
     prompt = get_prompt(personality, room)
     chain = prompt | get_llm() | StrOutputParser()
 

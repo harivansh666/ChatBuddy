@@ -1,3 +1,5 @@
+from langchain_core.messages import AIMessage, HumanMessage
+
 from server.modules.ai.prompts.genResult import generate_result
 from server.modules.ai.repository import AiRepository
 from server.modules.ai.schemas import (
@@ -47,13 +49,29 @@ class AiService:
         user_id: int,
         payload: AIChatRequest,
     ) -> AIChatResponse:
-        """Generate an AI reply, persist the exchange, and return the response."""
+        """Generate an AI reply with memory context, persist exchange, return response."""
+
+        # 1. Fetch recent exchanges from DB for this user+personality
+        past_entries = await self.repository.get_recent_history_for_context(
+            user_id=user_id,
+            personality=payload.personality.value,
+        )
+
+        # 2. Convert DB rows → LangChain message objects (interleaved HumanMessage / AIMessage)
+        history: list[HumanMessage | AIMessage] = []
+        for entry in past_entries:
+            history.append(HumanMessage(content=entry.user_prompt))
+            history.append(AIMessage(content=entry.bot_response))
+
+        # 3. Call LLM with full memory context
         ai_reply = await generate_result(
             question=payload.prompt,
             personality=payload.personality,
             room=payload.rooms,
+            history=history,
         )
 
+        # 4. Save new exchange to DB
         await self.repository.save_chat(
             user_id=user_id,
             user_prompt=payload.prompt,
